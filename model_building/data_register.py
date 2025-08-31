@@ -6,7 +6,7 @@ repo_id = "naveen07garg/Tourism-Package-Prediction"
 repo_type = "dataset"
 
 #== Local dir path where files are created to copy on HF ===
-project_dir="/content/drive/MyDrive/AIML_GreatLakes/MLOps/MLOps_Project/tourism_project/model_building"
+#project_dir="/content/drive/MyDrive/AIML_GreatLakes/MLOps/MLOps_Project/tourism_project/model_building"
 
 # Initialize API client
 api = HfApi(token=os.getenv("HF_TOKEN"))
@@ -21,7 +21,7 @@ except RepositoryNotFoundError:
     print(f"Space '{repo_id}' created.")
 
 api.upload_folder(
-    folder_path=project_dir+"/data",
+    folder_path="Tourism_Package_Prediction/data",
     repo_id=repo_id,
     repo_type=repo_type,
 )
