@@ -17,9 +17,9 @@ from huggingface_hub import login, HfApi
 #=====================================================================
 
 # Define constants for the dataset and output paths
-data_dir="/content/drive/MyDrive/AIML_GreatLakes/MLOps/MLOps_Project/tourism_project/data"
+data_dir="data" # Git hub data dir path
 api = HfApi(token=os.getenv("HF_TOKEN"))
-DATASET_PATH = "hf://datasets/naveen07garg/Tourism-Package-Prediction/Tourism-Package-Prediction.csv"
+DATASET_PATH = "hf://datasets/naveen07garg/Tourism-Package-Prediction/tourism.csv"
 tour_data_raw = pd.read_csv(DATASET_PATH)
 print("Dataset loaded successfully.")
 
