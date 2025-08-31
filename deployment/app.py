@@ -37,23 +37,23 @@ passport = st.selectbox("Has Passport", [0, 1])
 own_car = st.selectbox("Own Car", [0, 1])
 
 
-#=== Making a dictionary ===
+#=== Making a data frame ===
 input_data = pd.DataFrame([{
     "TypeofContact": typeof_contact,
     "CityTier": city_tier,
     "Occupation": occupation,
     "Gender": gender,
-    "NumberOfPersonVisiting": num_person_visiting,
-    "NumberOfFollowups": num_followups,
     "ProductPitched": product_pitched,
     "PreferredPropertyStar": preferred_property_star,
     "MaritalStatus": marital_status,
-    "NumberOfTrips": num_trips,
-    "Passport": passport,
-    "PitchSatisfactionScore": pitch_satisfaction_score,
-    "OwnCar": own_car,
-    "NumberOfChildrenVisiting": num_children_visiting,
     "Designation": designation
+    "NumberOfPersonVisiting": num_person_visiting,
+    "NumberOfFollowups": num_followups,
+    "NumberOfTrips": num_trips,
+    "PitchSatisfactionScore": pitch_satisfaction_score,
+    "NumberOfChildrenVisiting": num_children_visiting,
+    "Passport": passport,
+    "OwnCar": own_car,
 }])
 
 if st.button("Predict Sales Status"):

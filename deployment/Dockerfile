@@ -1,4 +1,3 @@
-%%writefile /content/drive/MyDrive/AIML_GreatLakes/MLOps/MLOps_Project/Tourism_Package_Prediction/deployment/Dockerfile
 #=== Use a minimal base image with Python 3.9 installed ===
 FROM python:3.9
 
