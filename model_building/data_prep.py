@@ -19,7 +19,7 @@ from huggingface_hub import login, HfApi
 # Define constants for the dataset and output paths
 data_dir="data/"
 api = HfApi(token=os.getenv("HF_TOKEN"))
-DATASET_PATH = "hf://datasets/naveen07garg/Tourism-Package-Prediction/Tourism-Package-Prediction.csv"
+DATASET_PATH = "hf://datasets/naveen07garg/Tourism-Package-Prediction/tourism.csv"
 tour_data_raw = pd.read_csv(DATASET_PATH)
 print("Dataset loaded successfully.")
 
