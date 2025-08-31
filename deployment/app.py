@@ -32,13 +32,13 @@ designation = st.selectbox("Designation in the Organisation", ["Manager", "Execu
 # Numeric (number_input)
 num_person_visiting = st.number_input("Number of Persons Visiting", min_value=1, max_value=5, value=1)
 num_followups = st.number_input("Number of Followups", min_value=1, max_value=6, value=1)
-num_trips = st.number_input("Number of Trips", min_value=1, max_value=22, value=1)
+num_trips = st.number_input("Number of Trips", min_value=1, max_value=22, value=3)
 pitch_satisfaction_score = st.number_input("Pitch Satisfaction Score", min_value=1, max_value=5, value=3)
 num_children_visiting = st.number_input("Number of Children Visiting", min_value=0, max_value=3, value=0)
 
-monthly_income = st.number_input("Monthly Income of customer", min_value=100, max_value=200000, value=0)
-duration_of_pitch = st.number_input("Duration of customer pich by Agent", min_value=0, max_value=150, value=30)
-age = st.number_input("Age of Customer", min_value=18, max_value=120, value=18)
+monthly_income = st.number_input("Monthly Income of customer", min_value=100, max_value=200000, value=32328)
+duration_of_pitch = st.number_input("Duration of customer pich by Agent", min_value=0, max_value=150, value=32)
+age = st.number_input("Age of Customer", min_value=18, max_value=120, value=54)
 
 # Binary (selectbox)
 #passport = st.selectbox("Has Passport", [0, 1])
