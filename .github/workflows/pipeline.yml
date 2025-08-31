@@ -14,13 +14,11 @@ jobs:
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
-        working-directory: Tourism_Package_Prediction
 
       - name: Upload Dataset to Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python model_building/data_register.py
-        working-directory: Tourism_Package_Prediction
 
 
   data-prep:
@@ -31,13 +29,11 @@ jobs:
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
-        working-directory: Tourism_Package_Prediction
 
       - name: Run Data Preparation
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python model_building/prep.py
-        working-directory: Tourism_Package_Prediction
 
 
   model-training:
@@ -48,7 +44,6 @@ jobs:
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
-        working-directory: Tourism_Package_Prediction
 
       - name: Start MLflow Server
         run: |
@@ -59,7 +54,6 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python model_building/train.py
-        working-directory: Tourism_Package_Prediction
 
 
   deploy-hosting:
@@ -70,7 +64,6 @@ jobs:
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
-        working-directory: Tourism_Package_Prediction
 
       - name: Hugging Face Login
         run: huggingface-cli login --token $HF_TOKEN
