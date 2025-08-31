@@ -1,4 +1,4 @@
-# for data manipulation
+#=== for data manipulation ===
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import make_column_transformer
@@ -16,12 +16,14 @@ from huggingface_hub import login, HfApi, create_repo
 from huggingface_hub.utils import RepositoryNotFoundError, HfHubHTTPError
 import mlflow
 
+#=== ML flow details ===
 mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("MLOps_experiment")
 
 api = HfApi()
 
-
+#==== File path for input data ===
+print("Load files from Hugging Face\n")
 Xtrain_path = "hf://datasets/naveen07garg/Tourism-Package-Prediction/Xtrain.csv"
 Xtest_path = "hf://datasets/naveen07garg/Tourism-Package-Prediction/Xtest.csv"
 ytrain_path = "hf://datasets/naveen07garg/Tourism-Package-Prediction/ytrain.csv"
@@ -33,23 +35,34 @@ ytrain = pd.read_csv(ytrain_path)
 ytest = pd.read_csv(ytest_path)
 
 
-# One-hot encode 'Type' and scale numeric features
+#=== One-hot encode categorical column and scale numeric features ===
+print("One-hot encode categorical column and scale numeric features\n")
+
 numeric_features = [
-    'Age',
-    'DurationOfPitch',
+    'Age',                     # assuming exists
+    'DurationOfPitch',         # assuming exists
+    'NumberOfPersonVisiting',
     'NumberOfFollowups',
     'NumberOfTrips',
-    'MonthlyIncome'
+    'MonthlyIncome',           # assuming exists
+    'Passport',
+    'PitchSatisfactionScore',
+    'OwnCar',
+    'NumberOfChildrenVisiting'
 ]
 
-categorical_features = ['TypeofContact', 'CityTier', 'Occupation', 'Gender',
-       'NumberOfPersonVisiting', 'ProductPitched',
-       'PreferredPropertyStar', 'MaritalStatus', 'Passport',
-       'PitchSatisfactionScore', 'OwnCar', 'NumberOfChildrenVisiting',
-       'Designation']
+categorical_features = [
+    'TypeofContact',
+    'CityTier',
+    'Occupation',
+    'Gender',
+    'ProductPitched',
+    'PreferredPropertyStar',
+    'MaritalStatus',
+    'Designation'
+]
 
-
-# Set the clas weight to handle class imbalance
+#=== Set the clas weight to handle class imbalance ===
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
 class_weight
 
@@ -75,13 +88,15 @@ param_grid = {
 # Model pipeline
 model_pipeline = make_pipeline(preprocessor, xgb_model)
 
-# Start MLflow run
+#=== Start MLflow run ===
+print("Start ML Flow.\n")
 with mlflow.start_run():
     # Hyperparameter tuning
     grid_search = GridSearchCV(model_pipeline, param_grid, cv=5, n_jobs=-1)
     grid_search.fit(Xtrain, ytrain)
 
     # Log all parameter combinations and their mean test scores
+    print("Log all parameter combinations and their mean test scores\n")
     results = grid_search.cv_results_
     for i in range(len(results['params'])):
         param_set = results['params'][i]
@@ -98,6 +113,7 @@ with mlflow.start_run():
     mlflow.log_params(grid_search.best_params_)
 
     # Store and evaluate the best model
+    print("Store and evaluate the best model\n")
     best_model = grid_search.best_estimator_
 
     classification_threshold = 0.45
@@ -124,7 +140,7 @@ with mlflow.start_run():
     })
 
     # Save the model locally
-    model_path = "best_machine_failure_model_v1.joblib"
+    model_path = "sales_prediction_model_v1.joblib"
     joblib.dump(best_model, model_path)
 
     # Log the model artifact
@@ -145,9 +161,12 @@ with mlflow.start_run():
         print(f"Space '{repo_id}' created.")
 
     # create_repo("churn-model", repo_type="model", private=False)
+    #=== Upload joblib file ===
+    print(f"Uploading model to space '{repo_id}'...")
     api.upload_file(
-        path_or_fileobj="best_machine_failure_model_v1.joblib",
-        path_in_repo="best_machine_failure_model_v1.joblib",
+        path_or_fileobj="sales_prediction_model_v1.joblib",
+        path_in_repo="sales_prediction_model_v1.joblib",
         repo_id=repo_id,
         repo_type=repo_type,
     )
+print("\n\nFinished Model training and upload\n\n")
