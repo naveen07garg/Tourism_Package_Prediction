@@ -4,9 +4,13 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 import joblib
 
+#=== Download and load the model ===
+model_path = hf_hub_download(repo_id="naveen07garg/Tourism-Package-Prediction", filename="sales_prediction_model_v1.joblib")
+model = joblib.load(model_path)
+
 # naveen07garg/Tourism-Package-Prediction
 
-st.title("🛒 Visit With Us - Tour Prediction ")
+st.title("Visit With Us - Tour Prediction ")
 st.write("Fill the details to predict:")
 
 # Input form
@@ -34,7 +38,7 @@ own_car = st.selectbox("Own Car", [0, 1])
 
 
 #=== Making a dictionary ===
-input_data = {
+input_data = pd.DataFrame([{
     "TypeofContact": typeof_contact,
     "CityTier": city_tier,
     "Occupation": occupation,
@@ -50,61 +54,10 @@ input_data = {
     "OwnCar": own_car,
     "NumberOfChildrenVisiting": num_children_visiting,
     "Designation": designation
-}
+}])
 
-if st.button("Predict", type='primary'):
-    response = requests.post("https://naveen07garg-Tourism-Package-Prediction.hf.space/v1/sales", json=input_data)    # enter user name and space name before running the cell
-    if response.status_code == 200:
-        prediction = response.json()['Prediction sales']
-        #churn_prediction = result["Prediction"]  # Extract only the value
-        st.success(f"Predicted Sales (in dollars): {prediction}")
-    else:
-        st.error("Error in API request")
-        st.write(response.text)
-        st.error("Response status code")
-        st.error("==========================================")
-        st.write(response.status_code)
-        st.write(response.headers)
-        st.write(response.request.body)
-        st.write(response.request.headers)
-        st.write(response.request.url)
-        st.write(response.request.method)
-        st.write(response.request.path_url)
-
-
-# Batch Prediction
-st.subheader("Batch Prediction")
-
-# Allow users to upload a CSV file for batch prediction
-file = st.file_uploader("Upload CSV file", type=["csv"])
-
-# Make batch prediction when the "Predict Batch" button is clicked
-if file is not None:
-    if st.button("Predict Batch", type='primary'):
-        response = requests.post("https://naveen07garg-Tourism-Package-Prediction.hf.space/v1/salesbatch", files={"file": file})  # Send file to Flask API
-        if response.status_code == 200:
-            predictions = response.json()
-            st.header("Batch Prediction Results")
-            st.write(predictions)
-        else:
-            st.error("Error in API request")
-            st.write(response.text)
-            st.error("Response status code")
-            st.error("==========================================")
-            st.write(response.status_code)
-            st.write(response.headers)
-            st.write(response.request.body)
-            st.write(response.request.headers)
-            st.write(response.request.url)
-            st.write(response.request.method)
-            st.write(response.request.path_url)
-
-
-    # Call backend API
-#    response = requests.post("https://<your-hf-backend-space-url>/predict", json=input_data)
-
-#    if response.status_code == 200:
-#        prediction = response.json()["predicted_sales"]
-#        st.success(f"Predicted Sales: {round(prediction, 2)}")
-#    else:
-#        st.error(f"Error: {response.text}")
+if st.button("Predict Sales Status"):
+    prediction = model.predict(input_data)[0]
+    result = "Product not Sold ⚡" if prediction == 1 else "Product Sold 😄"
+    st.subheader("Prediction Result:")
+    st.success(f"The model predicts: **{result}**")
