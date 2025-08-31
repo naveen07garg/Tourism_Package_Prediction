@@ -65,9 +65,10 @@ files = [data_dir+"Xtrain.csv",data_dir+"Xtest.csv",data_dir+"ytrain.csv",data_d
 
 print("Upload train and test dataset file to Hugging Face.\n")
 for file_path in files:
+    print("\nUploading file - [ "+ file_path + " ]")
     api.upload_file(
         path_or_fileobj=file_path,
-        path_in_repo=file_path.split("/")[-1],  # just the filename
+#        path_in_repo=file_path.split("/")[-1],  # just the filename
         repo_id="naveen07garg/Tourism-Package-Prediction",
         repo_type="dataset",
     )
